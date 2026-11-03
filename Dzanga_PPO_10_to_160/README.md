@@ -19,6 +19,24 @@ python -m pip install -r requirements.txt
 python dzanga_optimize.py smoke --output results/smoke
 ```
 
+## One baseline mission
+
+With the Python environment active, run this from this directory:
+
+```bash
+python run_baseline_mission.py --strategy uniform_original --mics 80 --seed 2026 --sim-seconds 86400 --dt 1
+```
+
+The launcher runs one headless mission with one worker and saves settings,
+simulator source hashes, microphone coordinates, outcomes, and elapsed runtime
+in a new timestamped folder under `baseline_pilot/`. `completed=false` means
+some poachers remained when the mission ended; it does not indicate a program failure.
+
+The [recorded pilot](baseline_pilot/PILOT_SUMMARY.md) covers five strategies with
+80 microphones and seeds 2026–2028 (15 missions). These records are committed;
+new generated run folders are ignored by default. Three seeds support an initial
+pilot, not a reliable ranking of strategies.
+
 ## Full baseline matrix
 
 ```bash

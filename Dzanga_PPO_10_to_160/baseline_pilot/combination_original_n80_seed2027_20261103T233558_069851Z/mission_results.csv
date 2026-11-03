@@ -1,0 +1,2 @@
+strategy,seed,requested_mics,spacing_level,horizon_seconds,dt,mics,poached,caught,uncaught,completed,sim_seconds,reward,wall_seconds
+combination_original,2027,80,2,86400.0,1.0,80,1,1,9,False,86400.0,-728.4,24.392

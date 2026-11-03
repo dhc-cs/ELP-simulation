@@ -1,0 +1,10 @@
+# Local OS files, Python caches, and virtual environments.
+.DS_Store
+__pycache__/
+*.py[cod]
+.venv/
+.venv-elp/
+venv/
+
+# The recorded 15-mission pilot is tracked explicitly. Ignore new run folders.
+Dzanga_PPO_10_to_160/baseline_pilot/

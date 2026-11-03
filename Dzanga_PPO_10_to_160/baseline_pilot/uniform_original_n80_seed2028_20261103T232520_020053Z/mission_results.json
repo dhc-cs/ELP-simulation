@@ -1,0 +1,16 @@
+{
+  "strategy": "uniform_original",
+  "seed": 2028,
+  "requested_mics": 80,
+  "spacing_level": 2,
+  "horizon_seconds": 86400.0,
+  "dt": 1.0,
+  "mics": 80,
+  "poached": 2,
+  "caught": 2,
+  "uncaught": 8,
+  "completed": false,
+  "sim_seconds": 86400.0,
+  "reward": -750.4,
+  "wall_seconds": 25.051
+}
