@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Microphone-count and layout optimization for the original Dzanga simulator.
 
-PPO makes one joint discrete choice (31 counts x 8 layout families x 5 spacing
+PPO makes one joint discrete choice (1 count x 8 layout families x 5 spacing
 settings) per simulated mission.  This is a one-step contextual-bandit-style RL
 problem: compare PPO to brute force / Bayesian search before claiming superiority.
 """
@@ -41,7 +41,7 @@ SPACING_LEVELS = (0.0, 0.2, 0.4, 0.65, 0.9)
 
 @dataclass
 class Config:
-    sim_seconds: float = 86400.0
+    sim_seconds: float = 2592000.0
     dt: float = 1.0
     seed: int = 2026
     poached_penalty: float = 100.0
@@ -416,7 +416,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('command',choices=['smoke','baseline','train','evaluate','plot'])
     p.add_argument('--output',type=Path,default=Path('results'))
-    p.add_argument('--sim-seconds',type=float,default=86400)
+    p.add_argument('--sim-seconds',type=float,default=2592000)
     p.add_argument('--dt',type=float,default=1.0)
     p.add_argument('--seed',type=int,default=2026)
     p.add_argument('--seeds',type=int,default=10)
