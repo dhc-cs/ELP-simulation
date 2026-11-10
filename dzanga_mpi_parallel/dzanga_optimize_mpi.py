@@ -32,7 +32,7 @@ def root_print(*args, **kwargs):
         print(*args, **kwargs)
 from dzanga_sim_mpi import DzangaSimulation, Mic, WIDTH, HEIGHT, STRATEGY_NAMES
 
-COUNTS = tuple(range(10, 161, 5))
+COUNTS = (80,)
 FAMILIES = (
     'uniform_original', 'fortress_original', 'perimeter_original', 'combination_original',
     'random', 'regular_grid', 'jittered_grid', 'grid_random_mix'
@@ -429,7 +429,7 @@ def main():
     if args.command=='smoke':
         cfg.sim_seconds=min(cfg.sim_seconds,20)
         for f in _partition_tasks(list(FAMILIES), rank, size):
-            result=run_configuration(10,f,2,args.seed + rank,cfg,
+            result=run_configuration(80,f,2,args.seed + rank,cfg,
                           args.output / ('smoke_'+f+'.csv'))
             print(f'[rank {rank}]', f, result)
         if comm is not None: comm.Barrier()
