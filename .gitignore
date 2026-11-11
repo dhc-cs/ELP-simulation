@@ -8,3 +8,6 @@ venv/
 
 # The recorded 15-mission pilot is tracked explicitly. Ignore new run folders.
 Dzanga_PPO_10_to_160/baseline_pilot/
+
+# Notes 
+notes.txt
