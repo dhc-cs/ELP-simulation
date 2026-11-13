@@ -18,14 +18,20 @@ import argparse
 import math
 import random
 import time
-import tkinter as tk
+try:
+    import tkinter as tk
+    from tkinter import ttk
+    from PIL import Image, ImageTk
+except ImportError:
+    tk = None
+    ttk = None
+    from PIL import Image
+    ImageTk = None
 from dataclasses import dataclass
 from pathlib import Path
-from tkinter import ttk
 from typing import Callable, List, Optional, Sequence, Tuple
 
 import numpy as np
-from PIL import Image, ImageTk
 
 
 # -----------------------------------------------------------------------------
