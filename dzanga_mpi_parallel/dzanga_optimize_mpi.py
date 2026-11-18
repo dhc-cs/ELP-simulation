@@ -327,7 +327,7 @@ def _make_mpi_vec_env(cfg):
     return MPIVecEnv()
 
 
-def train(cfg, timesteps, output):
+def train(cfg, timesteps, output, n_steps=64):
     try:
         from stable_baselines3 import PPO
         from stable_baselines3.common.env_checker import check_env
@@ -345,13 +345,13 @@ def train(cfg, timesteps, output):
         check_env(make_env(cfg), warn=True)
         env = _make_mpi_vec_env(cfg)
     try:
-        model = PPO('MlpPolicy', env, verbose=1, seed=cfg.seed, n_steps=64,
+        model = PPO('MlpPolicy', env, verbose=1, seed=cfg.seed, n_steps=n_steps,
                     batch_size=64, gamma=1.0, ent_coef=0.03, learning_rate=3e-4)
         model.learn(total_timesteps=timesteps)
         output.mkdir(parents=True, exist_ok=True)
         model.save(str(output/'ppo_policy'))
         config = asdict(cfg)
-        config.update(mpi_ranks=size, parallel_environments=size)
+        config.update(mpi_ranks=size, parallel_environments=size, n_steps=n_steps)
         (output/'training_config.json').write_text(json.dumps(config, indent=2))
         print('Saved:', output/'ppo_policy.zip')
     finally:
@@ -421,9 +421,12 @@ def main():
     p.add_argument('--seed',type=int,default=2026)
     p.add_argument('--seeds',type=int,default=10)
     p.add_argument('--timesteps',type=int,default=4096)
+    p.add_argument('--n-steps', type=int, default=64, help='Missions per MPI rank per PPO rollout')
     p.add_argument('--model',type=Path,default=Path('results/ppo_policy.zip'))
     p.add_argument('--max-cases',type=int,default=None,help='Debug subset of baseline combinations')
     args=p.parse_args()
+    if args.command == 'train' and args.n_steps < 1:
+        p.error('--n-steps must be positive')
     cfg=Config(args.sim_seconds,args.dt,args.seed)
     comm, rank, size = mpi_context()
     if args.command=='smoke':
@@ -434,7 +437,8 @@ def main():
             print(f'[rank {rank}]', f, result)
         if comm is not None: comm.Barrier()
     elif args.command=='baseline': baseline(cfg,args.seeds,args.output,max_cases=args.max_cases)
-    elif args.command=='train': train(cfg,args.timesteps,args.output)
+    elif args.command == 'train':
+        train(cfg, args.timesteps, args.output, n_steps=args.n_steps)
     elif args.command=='evaluate': evaluate(cfg,args.model,args.seeds,args.output)
     elif args.command=='plot' and rank == 0: plot_results(args.output)
 
